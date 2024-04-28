@@ -26,3 +26,6 @@ Here's a screenshot of screensht using screensht:
 
 ![image](https://github.com/ThatOneCalculator/screensht/assets/44733677/2f9edb94-21fc-4966-ad9e-69741aabb800)
 
+And a screenshot of a notification of a screenshot taken with screensht taken with screensht:
+
+![image](https://github.com/ThatOneCalculator/screensht/assets/44733677/573523df-5f1f-49d3-96c7-299c76c6c64e)
