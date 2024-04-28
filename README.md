@@ -13,12 +13,14 @@ I use this for my screenshots, some people ask how I make them so here it is
 
 Settings can be changed directly at the top of the script.
 
-## Uses:
+## Dependencies
+
 - [`grimblast`](https://github.com/hyprwm/contrib/blob/main/grimblast/grimblast) for screenshotting
-- `hyprctl` ([Hyprland](hyprland.org/)) for changing hyprland settings on the fly
+- [`hyprctl`](https://wiki.hyprland.org/Configuring/Using-hyprctl/) (part of [Hyprland](hyprland.org/)) for changing decoration settings while taking a screenshot
 - [`satty`](https://github.com/gabm/Satty) for optional screenshot editing
 - [`imagemagick`](https://imagemagick.org/index.php) for image processing
 - [`wl-copy`](https://github.com/bugaevc/wl-clipboard) for clipboard management (`wl-clipboard` and `wl-clipboard-rs` work)
+- [`libnotify`](https://gitlab.gnome.org/GNOME/libnotify) to send notifications (and a compatible notification daemon, preferabbly one with button support like [`swaync`](https://github.com/ErikReider/SwayNotificationCenter))
 
 Here's a screenshot of screensht using screensht:
 
