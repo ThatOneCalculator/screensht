@@ -11,3 +11,9 @@ Uses:
 - `hyprctl` ([Hyprland](hyprland.org/)) for changing hyprland settings on the fly
 - [`satty`](https://github.com/gabm/Satty) for optional screenshot editing
 - [`imagemagick`](https://imagemagick.org/index.php) for image processing
+- [`wl-copy`](https://github.com/bugaevc/wl-clipboard) for clipboard management (`wl-clipboard` and `wl-clipboard-rs` work)
+
+Here's a screenshot of screensht using screensht:
+
+![image](https://github.com/ThatOneCalculator/screensht/assets/44733677/2f9edb94-21fc-4966-ad9e-69741aabb800)
+
