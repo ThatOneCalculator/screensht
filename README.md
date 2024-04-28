@@ -6,7 +6,14 @@ Based on https://gist.github.com/arnvgh/01b204df3229ed8c41cfd6ed847bb545
 
 I use this for my screenshots, some people ask how I make them so here it is
 
-Uses:
+## Usage
+
+- `screensht area` for an area (or click on a window to get that window)
+- `screensht full` for a full screenshot of your active display
+
+Settings can be changed directly at the top of the script.
+
+## Uses:
 - [`grimblast`](https://github.com/hyprwm/contrib/blob/main/grimblast/grimblast) for screenshotting
 - `hyprctl` ([Hyprland](hyprland.org/)) for changing hyprland settings on the fly
 - [`satty`](https://github.com/gabm/Satty) for optional screenshot editing
