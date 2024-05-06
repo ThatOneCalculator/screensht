@@ -7,13 +7,13 @@ _SCREENSHOT_DIR_=$HOME/Pictures/Screenshots
 _ORIGINAL_DIR_=$_SCREENSHOT_DIR_/Original
 _LOG_FILE_="$_SCREENSHOT_DIR_/.screensht.log"
 # Color
-_FG_COLOR_='#e0def4'
+_FG_COLOR_='none'
 _BG_COLOR_='#191724'
-_BG_SIZE_=1
+_BG_SIZE_=3
 # Border Size Applied when value greater than or equal 3
-_BORDER_SIZE_=0
+_BORDER_SIZE_=3
 _SHADOW_SIZE_='50x20+0+8'  # [ weight ] x [ radius ] + [ horizontal ] x [ vertical ]
-_ROUNDED_CORNER_=8
+_ROUNDED_CORNER_=24
 # Author Config
 _AUTHOR_POST_=( 'South' '+0+15' )
 _AUTHOR_NAME_=" $USER"
@@ -22,11 +22,13 @@ _AUTHOR_COLOR_='#9ccfd8'
 _FONT_SIZE_=12
 _FONT_='Atkinson Hyperlegible'
 toggleborders=true
+# Can be swappy or satty
+_SCREENSHOT_EDITOR_='satty'
 
 function check() {
     if [[ $? -eq 1 && ${PIPESTATUS[0]} -eq 1 ]]; then
         _end_job_=$(date +%s)
-        summary $_start_job_ $_end_job_ 'failed' && dunstify -u critical -t 3000 -a "Screenshot Tool" "Screensht" >> $_LOG_FILE_ 2>&1
+        summary $_start_job_ $_end_job_ 'failed' && notify-send -u critical -t 3000 -a "Screenshot Tool" "Screensht" >> $_LOG_FILE_ 2>&1
         exit 1
     fi
 }
@@ -53,35 +55,35 @@ function get_latest_img() {
 function convert() {
     _target_file_=$( echo "$_LATEST_IMAGE_" | sed 's/.png/.screensht.png/g'  )
 
-    #if [[ $_BORDER_SIZE_ -ge 3 ]]; then
-      #  magick convert "$_LATEST_IMAGE_" \
-       #     -format 'roundrectangle 1,1 %[fx:w+4],%[fx:h+4] '"$_ROUNDED_CORNER_"','"$_ROUNDED_CORNER_"''\
-       #     info: > $_SCREENSHOT_DIR_/_rounded_.mvg
-       # check
+    if [[ $_BORDER_SIZE_ -ge 3 ]]; then
+       magick convert "$_LATEST_IMAGE_" \
+           -format 'roundrectangle 1,1 %[fx:w+4],%[fx:h+4] '"$_ROUNDED_CORNER_"','"$_ROUNDED_CORNER_"''\
+           info: > $_SCREENSHOT_DIR_/_rounded_.mvg
+       check
 
-#         magick convert "$_LATEST_IMAGE_" -border $_BORDER_SIZE_ -alpha transparent \
-#             -background none -fill white -stroke none -strokewidth 0 \
-#             -draw "@"$_SCREENSHOT_DIR_"/_rounded_.mvg" $_SCREENSHOT_DIR_/_rounded_mask_.png >> $_LOG_FILE_ 2>&1
-#         check
-# 
-#         magick convert "$_LATEST_IMAGE_" -border $_BORDER_SIZE_ -alpha transparent \
-#             -background none -fill none -stroke $_FG_COLOR_ -strokewidth $_BORDER_SIZE_ \
-#             -draw "@"$_SCREENSHOT_DIR_"/_rounded_.mvg" $_SCREENSHOT_DIR_/_rounded_overlay_.png >> $_LOG_FILE_ 2>&1
-#         check
-# 
-#         magick convert "$_LATEST_IMAGE_" -alpha set -bordercolor none -border $_BORDER_SIZE_  \
-#             $_SCREENSHOT_DIR_/_rounded_mask_.png -compose DstIn -composite \
-#             $_SCREENSHOT_DIR_/_rounded_overlay_.png -compose Over -composite \
-#             "$_target_file_" >> $_LOG_FILE_ 2>&1 && \
-#         rm -f $_SCREENSHOT_DIR_/_rounded_*
-#         check
-    #else
+        magick convert "$_LATEST_IMAGE_" -border $_BORDER_SIZE_ -alpha transparent \
+            -background none -fill white -stroke none -strokewidth 0 \
+            -draw "@"$_SCREENSHOT_DIR_"/_rounded_.mvg" $_SCREENSHOT_DIR_/_rounded_mask_.png >> $_LOG_FILE_ 2>&1
+        check
+
+        magick convert "$_LATEST_IMAGE_" -border $_BORDER_SIZE_ -alpha transparent \
+            -background none -fill $_FG_COLOR_ -stroke none -alpha transparent -strokewidth $_BORDER_SIZE_ \
+            -draw "@"$_SCREENSHOT_DIR_"/_rounded_.mvg" $_SCREENSHOT_DIR_/_rounded_overlay_.png >> $_LOG_FILE_ 2>&1
+        check
+
+        magick convert "$_LATEST_IMAGE_" -alpha set -bordercolor none -border $_BORDER_SIZE_  \
+            $_SCREENSHOT_DIR_/_rounded_mask_.png -compose DstIn -composite \
+            $_SCREENSHOT_DIR_/_rounded_overlay_.png -compose Over -composite \
+            "$_target_file_" >> $_LOG_FILE_ 2>&1 && \
+        rm -f $_SCREENSHOT_DIR_/_rounded_*
+        check
+    else
         magick convert "$_LATEST_IMAGE_" \( +clone  -alpha extract -draw 'fill black polygon 0,0 0,'"$_ROUNDED_CORNER_"' '"$_ROUNDED_CORNER_"',0 fill white circle '"$_ROUNDED_CORNER_"','"$_ROUNDED_CORNER_"' '"$_ROUNDED_CORNER_"',0' \
         \( +clone -flip \) -compose Multiply -composite \
         \( +clone -flop \) -compose Multiply -composite \
         \) -alpha off -compose CopyOpacity -composite -compose over "$_target_file_" >> $_LOG_FILE_ 2>&1
         check
-    #fi
+    fi
 
     magick convert "$_target_file_" \( +clone -background black -shadow $_SHADOW_SIZE_ \) +swap -background none -layers merge +repage "$_target_file_" >> $_LOG_FILE_ 2>&1 \
     && magick convert "$_target_file_" -bordercolor none -alpha background -border $_BG_SIZE_ "$_target_file_" >> $_LOG_FILE_ 2>&1
@@ -106,9 +108,15 @@ function summary() {
         wl-copy < "$_target_file_" >> $_LOG_FILE_ 2>&1
 
         message="${_notif_message_} Runtime: $seconds second(s)"
-        ret_val=$(notify-send -i "$_target_file_" -t 10000 "Screenshot Tool" "$message" -a "Screenshot Tool" --action 'edit=Edit')
+        ret_val=$(notify-send -i "$_target_file_" -t 10000 "Screenshot Tool" "$message" -a "Screenshot Tool" --action 'edit=Edit' --action 'default=Open')
         if [[ $ret_val == "edit" ]]; then
-        	satty --filename "$_target_file_" --output-filename=$( echo "$_target_file_" | sed 's/.png/.EDITED.png/g' );
+        	if [[ $_SCREENSHOT_EDITOR_ == "satty" ]]; then
+        		satty --filename="$_target_file_" --output-filename=$( echo "$_target_file_" | sed 's/.png/.EDITED.png/g' );
+        	elif [[ $_SCREENSHOT_EDITOR_ == "swappy" ]]; then
+        		swappy -f "$_target_file_" -o $( echo "$_target_file_" | sed 's/.png/.EDITED.png/g' );
+        	fi
+		elif [[ $ret_val == "default" ]]; then
+			xdg-open "$_target_file_";
         fi
     fi
 }
@@ -124,14 +132,14 @@ function main() {
 
 	if [ $toggleborders = true ]; then
 		original_border_size=$(hyprctl getoption general:border_size | grep 'int:' | awk '{print $2}')
-		original_border_radius=$(hyprctl getoption decoration:rounding | grep 'int:' | awk '{print $2}')
+		# original_border_radius=$(hyprctl getoption decoration:rounding | grep 'int:' | awk '{print $2}')
 		hyprctl keyword general:border_size 0
-		hyprctl keyword decoration:rounding 0
+		# hyprctl keyword decoration:rounding 12
 	fi
     $_screenshot_command_ $_SCREENSHOT_DIR_\/$_start_job_.png> /dev/null 2>&1
     if [ $toggleborders ]; then
     	hyprctl keyword general:border_size $original_border_size
-    	hyprctl keyword decoration:rounding $original_border_radius
+    	# hyprctl keyword decoration:rounding $original_border_radius
 	fi
     check
 
