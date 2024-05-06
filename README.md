@@ -8,8 +8,10 @@ I use this for my screenshots, some people ask how I make them so here it is
 
 ## Usage
 
-- `screensht area` for an area (or click on a window to get that window)
-- `screensht full` for a full screenshot of your active display
+- `screensht area` for an area (or click on a window to get that window).
+- `screensht full` for a full screenshot of your active display.
+- Screenshots are automatically copied to the clipboard. Click the notification to view the screenshot, or click the "Edit" button to edit the screenshot.
+- Lines 5-26 in `screensht` are used for user configuration.
 
 Settings can be changed directly at the top of the script.
 
