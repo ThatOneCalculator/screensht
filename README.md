@@ -17,7 +17,7 @@ Settings can be changed directly at the top of the script.
 
 - [`grimblast`](https://github.com/hyprwm/contrib/blob/main/grimblast/grimblast) for screenshotting
 - [`hyprctl`](https://wiki.hyprland.org/Configuring/Using-hyprctl/) (part of [Hyprland](hyprland.org/)) for changing decoration settings while taking a screenshot
-- [`satty`](https://github.com/gabm/Satty) for optional screenshot editing
+- [`satty`](https://github.com/gabm/Satty) or [`swappy`](https://github.com/jtheoof/swappy) for optional screenshot editing
 - [`imagemagick`](https://imagemagick.org/index.php) for image processing
 - [`wl-copy`](https://github.com/bugaevc/wl-clipboard) for clipboard management (`wl-clipboard` and `wl-clipboard-rs` work)
 - [`libnotify`](https://gitlab.gnome.org/GNOME/libnotify) to send notifications (and a compatible notification daemon, preferabbly one with button support like [`swaync`](https://github.com/ErikReider/SwayNotificationCenter))
