@@ -115,9 +115,9 @@ function summary() {
         	elif [[ $_SCREENSHOT_EDITOR_ == "swappy" ]]; then
         		swappy -f "$_target_file_" -o $( echo "$_target_file_" | sed 's/.png/.EDITED.png/g' );
         	fi
-		elif [[ $ret_val == "default" ]]; then
-			xdg-open "$_target_file_";
-        fi
+	elif [[ $ret_val == "default" ]]; then
+		xdg-open "$_target_file_";
+       fi
     fi
 }
 
