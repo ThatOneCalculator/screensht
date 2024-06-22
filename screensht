@@ -21,7 +21,7 @@ _AUTHOR_COLOR_='#9ccfd8'
 # Get Lists Font With "convert -list font | grep -iE 'font:.*' | nl"
 _FONT_SIZE_=12
 _FONT_='Atkinson Hyperlegible'
-toggleborders=true
+toggleborders=false
 # Can be swappy or satty
 _SCREENSHOT_EDITOR_='satty'
 
@@ -137,7 +137,7 @@ function main() {
 		# hyprctl keyword decoration:rounding 12
 	fi
     $_screenshot_command_ $_SCREENSHOT_DIR_\/$_start_job_.png> /dev/null 2>&1
-    if [ $toggleborders ]; then
+    if [ $toggleborders = true ]; then
     	hyprctl keyword general:border_size $original_border_size
     	# hyprctl keyword decoration:rounding $original_border_radius
 	fi
