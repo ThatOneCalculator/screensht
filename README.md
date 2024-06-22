@@ -1,6 +1,6 @@
 # screensht
 
-Utility to make Hyprland screenshots look pretty
+Utility to make screenshots on wlroots compositors look pretty
 
 Based on https://gist.github.com/arnvgh/01b204df3229ed8c41cfd6ed847bb545
 
